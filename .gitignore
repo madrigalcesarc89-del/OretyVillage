@@ -1,0 +1,19 @@
+# Godot 4.x — ignorados generados por el editor/export
+.godot/
+*.tmp
+*.log
+
+# Export builds (se regeneran; solo se versiona export_presets.cfg)
+export/debug/*
+!export/debug/.gitkeep
+export/release/*
+!export/release/.gitkeep
+
+# Mono / .NET (no aplica a Standard, pero inofensivo)
+.mono/
+data_*/
+
+# OS
+Thumbs.db
+.DS_Store
+Desktop.ini

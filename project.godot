@@ -1,0 +1,25 @@
+; Engine configuration file.
+; OretyVillage — proyecto Godot 4.7.1 Standard, 2D vertical móvil.
+; Generado por setup inicial. Sin mecánicas de juego todavía.
+
+config_version=5
+
+[application]
+
+config/name="OretyVillage"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/size/resizable=true
+window/handheld/orientation=1
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
