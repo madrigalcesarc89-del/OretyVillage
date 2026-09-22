@@ -6,7 +6,8 @@
       "description": "Un gato curioso que merodea la plaza.",
       "sprite": "res://assets/import/mango_casual.png",
       "scale": 0.35,
-      "position": [850, 1700]
+      "position": [850, 1700],
+      "wander_radius": 200
     }
   ]
 }
