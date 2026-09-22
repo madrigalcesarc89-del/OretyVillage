@@ -1,12 +1,14 @@
 class_name NPC
-extends Node2D
+extends Interactable
 ## Fase 3 — NPC dirigido por datos (npcs.json).
 ## Fuente de verdad = la ficha JSON (sprite, escala, posición de ANCLA).
 ## Paso 2: vagabundeo aleatorio con pausas dentro de un círculo.
 ## Paso 4: rutina día/noche (vaga de día, descansa de noche).
-## Sin diálogo, sin colisión todavía.
+## Paso 5: diálogo secuencial data-driven (hereda el patrón Interactable:
+## la raíz Area2D registra al NPC como interact_target, tipado seguro).
+## Sin colisión sólida todavía (solo Area2D, el jugador lo atraviesa).
 ## TODO paso diálogo/rutinas: agregar StaticBody2D con colisión real para
-## que el jugador no atraviese al NPC + activar Area2D Proximity.
+## que el jugador no atraviese al NPC.
 ## TODO futuras zonas: rutina con desplazamientos (casa/tienda/...) usando
 ## start_walk_to(punto) + arrive() como ganchos, sin rehacer esta base.
 
@@ -30,6 +32,10 @@ var _anchor := Vector2.ZERO
 var _target := Vector2.ZERO
 var _walking := false
 var _pause_left := 0.0
+## Paso 5: diálogo secuencial data-driven (sin ramificaciones).
+var _name := ""
+var _lines: Array = []
+var _line_idx := 0
 ## Paso 4: descanso nocturno. Con GameTime por señal (event-driven).
 var _resting := false
 
@@ -44,6 +50,7 @@ func is_day() -> bool:
 
 
 func _ready() -> void:
+	super._ready()
 	var data := NPCDatabase.get_npc(npc_id)
 	if data.is_empty():
 		return
@@ -57,10 +64,14 @@ func _ready() -> void:
 	_anchor = Vector2(float(pos[0]), float(pos[1]))
 	position = _anchor
 	wander_radius = float(data.get("wander_radius", wander_radius))
+	_name = String(data.get("name", npc_id))
+	_lines = data.get("dialogue", [])
 	randomize()
 	_pause_left = randf_range(pause_min, pause_max)
 	GameTime.phase_changed.connect(_on_phase_changed)
 	_apply_phase(GameTime.get_phase())
+	# Proximidad heredada de Interactable: la raíz Area2D registra al NPC
+	# como interact_target (ver super._ready()). Sin conexiones extra.
 
 
 func _process(delta: float) -> void:
@@ -132,3 +143,24 @@ func _step_walk(delta: float) -> void:
 func arrive() -> void:
 	_walking = false
 	_pause_left = randf_range(pause_min, pause_max)
+
+
+## Diálogo genérico: cada llamada devuelve "Nombre: línea" y avanza.
+## Tras la última devuelve "" (el HUD limpia) y reinicia en la 1ª.
+## Cualquier NPC con array "dialogue" en su ficha lo reutiliza tal cual.
+func advance_dialogue() -> String:
+	if _lines.is_empty():
+		return ""
+	if _line_idx >= _lines.size():
+		_line_idx = 0
+		return ""
+	var line := "%s: %s" % [_name, String(_lines[_line_idx])]
+	_line_idx += 1
+	return line
+
+
+## Al alejarse se resetea la secuencia (hereda el desregistro de Interactable).
+func _on_body_exited(body: Node2D) -> void:
+	super._on_body_exited(body)
+	if body.is_in_group("player"):
+		_line_idx = 0

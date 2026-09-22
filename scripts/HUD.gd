@@ -43,5 +43,22 @@ func show_message(text: String) -> void:
 
 
 func _on_interact_pressed() -> void:
-	if player != null and player.interact_target != null:
-		show_message(player.interact_target.message)
+	if player == null or player.interact_target == null:
+		return
+	var target: Node2D = player.interact_target
+	# NPCs con diálogo secuencial; resto (caja/pozo) mensaje simple igual.
+	if target.has_method("advance_dialogue"):
+		var line: String = target.call("advance_dialogue")
+		if line.is_empty():
+			clear_message()
+		else:
+			show_message(line)
+	elif "message" in target:
+		show_message(target.get("message"))
+
+
+func clear_message() -> void:
+	if _msg_tween and _msg_tween.is_valid():
+		_msg_tween.kill()
+	message_label.text = ""
+	message_label.modulate.a = 0.0

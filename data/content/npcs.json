@@ -7,7 +7,12 @@
       "sprite": "res://assets/import/mango_casual.png",
       "scale": 0.35,
       "position": [850, 1700],
-      "wander_radius": 200
+      "wander_radius": 200,
+      "dialogue": [
+        "¡Hola! Soy Mango. 🐾",
+        "La plaza está muy tranquila hoy...",
+        "¿Viste mi rosa? ¡Aquí está! 🌹"
+      ]
     }
   ]
 }

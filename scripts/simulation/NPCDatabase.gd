@@ -40,4 +40,7 @@ static func _load_once() -> void:
 		if not e.has("id") or not e.has("sprite") or not e.has("position"):
 			push_error("NPCDatabase: ficha incompleta (id/sprite/position): %s" % str(e))
 			continue
+		if e.has("dialogue") and (typeof(e["dialogue"]) != TYPE_ARRAY or (e["dialogue"] as Array).is_empty()):
+			push_error("NPCDatabase: 'dialogue' debe ser array no vacío: %s" % str(e.get("id")))
+			continue
 		_cache[String(e["id"])] = e
