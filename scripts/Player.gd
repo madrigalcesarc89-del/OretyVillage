@@ -9,6 +9,8 @@ var touch_vector := Vector2.ZERO
 var interact_target: Interactable = null
 ## Fase 4 — inventario propio del jugador (clase reutilizable).
 var inventory: Inventory = null
+## Fase 4 paso 2 — monedas de sesión (el guardado es fase posterior).
+var coins: int = 0
 
 @onready var sprite: Sprite2D = $Sprite2D
 

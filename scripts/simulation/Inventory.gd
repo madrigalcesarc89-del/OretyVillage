@@ -25,6 +25,19 @@ func has_item(item_id: String, amount: int = 1) -> bool:
 	return count(item_id) >= amount
 
 
+## Resta si hay suficiente; false sin cambios parciales. Emite changed.
+func remove_item(item_id: String, amount: int = 1) -> bool:
+	if item_id.is_empty() or amount <= 0:
+		return false
+	if count(item_id) < amount:
+		return false
+	_items[item_id] = int(_items[item_id]) - amount
+	if int(_items[item_id]) <= 0:
+		_items.erase(item_id)
+	changed.emit()
+	return true
+
+
 func count(item_id: String) -> int:
 	return int(_items.get(item_id, 0))
 

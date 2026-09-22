@@ -40,4 +40,7 @@ static func _load_once() -> void:
 		if not e.has("id") or not e.has("name") or not e.has("category"):
 			push_error("ItemDatabase: ficha incompleta (id/name/category): %s" % str(e))
 			continue
+		if e.has("sell_price") and (typeof(e["sell_price"]) != TYPE_INT and typeof(e["sell_price"]) != TYPE_FLOAT or int(e["sell_price"]) < 0):
+			push_error("ItemDatabase: 'sell_price' inválido (>=0): %s" % str(e.get("id")))
+			continue
 		_cache[String(e["id"])] = e
