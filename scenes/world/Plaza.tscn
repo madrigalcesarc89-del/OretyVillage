@@ -1,0 +1,107 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/Interactable.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://ui/HUD.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/simulation/DayNightLight.gd" id="4"]
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_l"]
+normal = Vector2(1, 0)
+distance = 0.0
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_r"]
+normal = Vector2(-1, 0)
+distance = -2160.0
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_t"]
+normal = Vector2(0, 1)
+distance = 0.0
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_b"]
+normal = Vector2(0, -1)
+distance = -3840.0
+
+[sub_resource type="RectangleShape2D" id="box_shape"]
+size = Vector2(160, 160)
+
+[node name="Plaza" type="Node2D"]
+
+[node name="Pasto" type="ColorRect" parent="."]
+offset_right = 2160.0
+offset_bottom = 3840.0
+color = Color(0.16, 0.30, 0.18, 1)
+
+[node name="CaminoH" type="ColorRect" parent="."]
+offset_top = 1840.0
+offset_right = 2160.0
+offset_bottom = 2000.0
+color = Color(0.55, 0.42, 0.26, 1)
+
+[node name="CaminoV" type="ColorRect" parent="."]
+offset_left = 1000.0
+offset_right = 1160.0
+offset_bottom = 3840.0
+color = Color(0.55, 0.42, 0.26, 1)
+
+[node name="PlazaCentro" type="ColorRect" parent="."]
+offset_left = 630.0
+offset_top = 1470.0
+offset_right = 1530.0
+offset_bottom = 2370.0
+color = Color(0.75, 0.70, 0.58, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_l")
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_r")
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_t")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_b")
+
+[node name="Player" parent="." instance=ExtResource("2")]
+position = Vector2(1080, 2600)
+
+[node name="Camera2D" parent="Player"]
+limit_right = 2160
+limit_bottom = 3840
+
+[node name="Caja" type="Area2D" parent="."]
+position = Vector2(700, 1500)
+script = ExtResource("1")
+message = "¡Encontraste una caja misteriosa! 📦"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Caja"]
+shape = SubResource("box_shape")
+
+[node name="Visual" type="ColorRect" parent="Caja"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.55, 0.36, 0.2, 1)
+
+[node name="Pozo" type="Area2D" parent="."]
+position = Vector2(1500, 2300)
+script = ExtResource("1")
+message = "Un pozo antiguo. Alguien dejó flores. 🌸"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pozo"]
+shape = SubResource("box_shape")
+
+[node name="Visual" type="ColorRect" parent="Pozo"]
+offset_left = -55.0
+offset_top = -55.0
+offset_right = 55.0
+offset_bottom = 55.0
+color = Color(0.30, 0.45, 0.65, 1)
+
+[node name="DayNight" type="CanvasModulate" parent="."]
+script = ExtResource("4")
+
+[node name="HUD" parent="." instance=ExtResource("3")]
