@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/Interactable.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://ui/HUD.tscn" id="3"]
 [ext_resource type="Script" path="res://scripts/simulation/DayNightLight.gd" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/world/NPC.tscn" id="5"]
 
 [sub_resource type="WorldBoundaryShape2D" id="wb_l"]
 normal = Vector2(1, 0)
@@ -100,6 +101,9 @@ offset_top = -55.0
 offset_right = 55.0
 offset_bottom = 55.0
 color = Color(0.30, 0.45, 0.65, 1)
+
+[node name="Mango" parent="." instance=ExtResource("5")]
+npc_id = "mango"
 
 [node name="DayNight" type="CanvasModulate" parent="."]
 script = ExtResource("4")

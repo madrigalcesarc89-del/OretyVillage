@@ -1,0 +1,12 @@
+{
+  "npcs": [
+    {
+      "id": "mango",
+      "name": "Mango",
+      "description": "Un gato curioso que merodea la plaza.",
+      "sprite": "res://assets/import/mango_casual.png",
+      "scale": 0.35,
+      "position": [850, 1700]
+    }
+  ]
+}
