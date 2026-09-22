@@ -3,9 +3,12 @@ extends Node2D
 ## Fase 3 — NPC dirigido por datos (npcs.json).
 ## Fuente de verdad = la ficha JSON (sprite, escala, posición de ANCLA).
 ## Paso 2: vagabundeo aleatorio con pausas dentro de un círculo.
-## Sin diálogo, sin rutinas, sin colisión todavía.
+## Paso 4: rutina día/noche (vaga de día, descansa de noche).
+## Sin diálogo, sin colisión todavía.
 ## TODO paso diálogo/rutinas: agregar StaticBody2D con colisión real para
 ## que el jugador no atraviese al NPC + activar Area2D Proximity.
+## TODO futuras zonas: rutina con desplazamientos (casa/tienda/...) usando
+## start_walk_to(punto) + arrive() como ganchos, sin rehacer esta base.
 
 ## Puntos a evitar al elegir destino (caja, pozo): no "flotar encima".
 const AVOID_POINTS: Array = [Vector2(700, 1500), Vector2(1500, 2300)]
@@ -27,6 +30,17 @@ var _anchor := Vector2.ZERO
 var _target := Vector2.ZERO
 var _walking := false
 var _pause_left := 0.0
+## Paso 4: descanso nocturno. Con GameTime por señal (event-driven).
+var _resting := false
+
+const REST_TINT := Color(0.72, 0.74, 0.88)
+const WAKE_TINT := Color.WHITE
+
+
+## Día = manana/tarde. Las rutinas futuras refinan por fase aquí.
+func is_day() -> bool:
+	var p := GameTime.get_phase()
+	return p == "manana" or p == "tarde"
 
 
 func _ready() -> void:
@@ -45,6 +59,8 @@ func _ready() -> void:
 	wander_radius = float(data.get("wander_radius", wander_radius))
 	randomize()
 	_pause_left = randf_range(pause_min, pause_max)
+	GameTime.phase_changed.connect(_on_phase_changed)
+	_apply_phase(GameTime.get_phase())
 
 
 func _process(delta: float) -> void:
@@ -58,9 +74,26 @@ func _process(delta: float) -> void:
 
 ## Elige destino y arranca. Las rutinas futuras pueden llamar aquí
 ## directamente o sustituir esta función sin tocar el resto del NPC.
+## De noche no arranca: el walk en curso termina (sin corte) y descansa.
 func start_walk() -> void:
+	if _resting:
+		return
 	_target = pick_target()
 	_walking = true
+
+
+func _on_phase_changed(new_phase: String) -> void:
+	_apply_phase(new_phase)
+
+
+func _apply_phase(phase: String) -> void:
+	var day := phase == "manana" or phase == "tarde"
+	_resting = not day
+	# Si cae la noche a mitad de WALK, _step_walk lo termina y arrive()
+	# lo deja descansando: transición natural, sin congelamiento.
+	sprite.modulate = WAKE_TINT if day else REST_TINT
+	if day and not _walking:
+		_pause_left = randf_range(pause_min, pause_max)
 
 
 func pick_target() -> Vector2:
