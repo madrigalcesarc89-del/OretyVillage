@@ -76,6 +76,7 @@ limit_bottom = 3840
 position = Vector2(700, 1500)
 script = ExtResource("1")
 message = "¡Encontraste una caja misteriosa! 📦"
+gives_item_id = "fibra"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Caja"]
 shape = SubResource("box_shape")

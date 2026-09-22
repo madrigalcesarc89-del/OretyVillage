@@ -7,6 +7,8 @@ extends CharacterBody2D
 
 var touch_vector := Vector2.ZERO
 var interact_target: Interactable = null
+## Fase 4 — inventario propio del jugador (clase reutilizable).
+var inventory: Inventory = null
 
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -14,6 +16,7 @@ var _bob := 0.0
 
 
 func _ready() -> void:
+	inventory = Inventory.new()
 	add_to_group("player")
 
 

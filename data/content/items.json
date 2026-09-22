@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "id": "fibra",
+      "name": "Fibra",
+      "description": "Fibra vegetal de la plaza. Sirve como material.",
+      "category": "material",
+      "color": "#C9A227"
+    },
+    {
+      "id": "piedra",
+      "name": "Piedra",
+      "description": "Una piedra común. Sin fuente todavía.",
+      "category": "material",
+      "color": "#8D8D8D"
+    }
+  ]
+}
