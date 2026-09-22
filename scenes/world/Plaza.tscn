@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/Interactable.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://ui/HUD.tscn" id="3"]
 [ext_resource type="Script" path="res://scripts/simulation/DayNightLight.gd" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/world/NPC.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/simulation/Harvestable.gd" id="6"]
 
 [sub_resource type="WorldBoundaryShape2D" id="wb_l"]
 normal = Vector2(1, 0)
@@ -74,9 +75,11 @@ limit_bottom = 3840
 
 [node name="Caja" type="Area2D" parent="."]
 position = Vector2(700, 1500)
-script = ExtResource("1")
+script = ExtResource("6")
 message = "¡Encontraste una caja misteriosa! 📦"
 gives_item_id = "fibra"
+respawn_minutes_game = 360.0
+depleted_message = "Esta caja está vacía, vuelve más tarde. 📦"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Caja"]
 shape = SubResource("box_shape")
