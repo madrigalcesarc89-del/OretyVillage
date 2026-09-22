@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/Interactable.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://ui/HUD.tscn" id="3"]
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_l"]
+normal = Vector2(1, 0)
+distance = 0.0
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_r"]
+normal = Vector2(-1, 0)
+distance = -1440.0
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_t"]
+normal = Vector2(0, 1)
+distance = 0.0
+
+[sub_resource type="WorldBoundaryShape2D" id="wb_b"]
+normal = Vector2(0, -1)
+distance = -2560.0
+
+[sub_resource type="RectangleShape2D" id="box_shape"]
+size = Vector2(160, 160)
+
+[node name="PrototypeWorld" type="Node2D"]
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1440.0
+offset_bottom = 2560.0
+color = Color(0.13, 0.23, 0.16, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_l")
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_r")
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_t")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+shape = SubResource("wb_b")
+
+[node name="Player" parent="." instance=ExtResource("2")]
+position = Vector2(720, 1280)
+
+[node name="Caja" type="Area2D" parent="."]
+position = Vector2(360, 640)
+script = ExtResource("1")
+message = "¡Encontraste una caja misteriosa! 📦"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Caja"]
+shape = SubResource("box_shape")
+
+[node name="Visual" type="ColorRect" parent="Caja"]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.55, 0.36, 0.2, 1)
+
+[node name="HUD" parent="." instance=ExtResource("3")]
