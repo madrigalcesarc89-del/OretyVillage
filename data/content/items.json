@@ -6,7 +6,8 @@
       "description": "Fibra vegetal de la plaza. Sirve como material.",
       "category": "material",
       "color": "#C9A227",
-      "sell_price": 5
+      "sell_price": 5,
+      "buy_price": 8
     },
     {
       "id": "piedra",
@@ -14,7 +15,8 @@
       "description": "Una piedra común. Sin fuente todavía.",
       "category": "material",
       "color": "#8D8D8D",
-      "sell_price": 3
+      "sell_price": 3,
+      "buy_price": 5
     }
   ]
 }

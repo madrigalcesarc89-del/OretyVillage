@@ -43,4 +43,7 @@ static func _load_once() -> void:
 		if e.has("sell_price") and (typeof(e["sell_price"]) != TYPE_INT and typeof(e["sell_price"]) != TYPE_FLOAT or int(e["sell_price"]) < 0):
 			push_error("ItemDatabase: 'sell_price' inválido (>=0): %s" % str(e.get("id")))
 			continue
+		if e.has("buy_price") and (typeof(e["buy_price"]) != TYPE_INT and typeof(e["buy_price"]) != TYPE_FLOAT or int(e["buy_price"]) < 0):
+			push_error("ItemDatabase: 'buy_price' inválido (>=0): %s" % str(e.get("id")))
+			continue
 		_cache[String(e["id"])] = e
