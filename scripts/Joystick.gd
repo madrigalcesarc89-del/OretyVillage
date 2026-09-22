@@ -14,6 +14,9 @@ var _mouse_down := false
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	custom_minimum_size = Vector2(RADIUS * 2.0 + 40.0, RADIUS * 2.0 + 40.0)
+	visible = true
+	call_deferred("queue_redraw")
 
 
 func _center() -> Vector2:
@@ -52,6 +55,7 @@ func _update_output(pos: Vector2) -> void:
 
 func _draw() -> void:
 	var c := _center()
-	draw_circle(c, RADIUS, Color(1, 1, 1, 0.15))
-	draw_arc(c, RADIUS, 0, TAU, 48, Color(1, 1, 1, 0.35), 3.0)
-	draw_circle(c + output * (RADIUS - KNOB), KNOB, Color(1, 1, 1, 0.35))
+	draw_circle(c, RADIUS + 12.0, Color(0, 0, 0, 0.35))
+	draw_circle(c, RADIUS, Color(1, 1, 1, 0.30))
+	draw_arc(c, RADIUS, 0, TAU, 48, Color(1, 1, 1, 0.75), 4.0)
+	draw_circle(c + output * (RADIUS - KNOB), KNOB, Color(1, 1, 1, 0.60))

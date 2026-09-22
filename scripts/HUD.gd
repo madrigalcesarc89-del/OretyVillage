@@ -11,9 +11,18 @@ var _msg_tween: Tween = null
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player") as VillagePlayer
+	if player == null:
+		# Orden de _ready atípico (p. ej. HUD antes que Player): reintentar.
+		call_deferred("_resolver_player_diferido")
 	interact_button.visible = false
 	interact_button.pressed.connect(_on_interact_pressed)
 	message_label.modulate.a = 0.0
+
+
+func _resolver_player_diferido() -> void:
+	player = get_tree().get_first_node_in_group("player") as VillagePlayer
+	if player == null:
+		push_warning("HUD: no se encontró nodo en grupo 'player'; joystick y botón inactivos.")
 
 
 func _process(_delta: float) -> void:
