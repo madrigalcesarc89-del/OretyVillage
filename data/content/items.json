@@ -17,6 +17,33 @@
       "color": "#8D8D8D",
       "sell_price": 3,
       "buy_price": 5
+    },
+    {
+      "id": "pez_sol",
+      "name": "Pez Sol",
+      "description": "Un pez común de aguas tranquilas.",
+      "category": "fish",
+      "color": "#E8A33D",
+      "sell_price": 4,
+      "buy_price": 6
+    },
+    {
+      "id": "pez_luna",
+      "name": "Pez Luna",
+      "description": "Un pez de escamas pálidas.",
+      "category": "fish",
+      "color": "#9FB6C9",
+      "sell_price": 7,
+      "buy_price": 10
+    },
+    {
+      "id": "pez_roca",
+      "name": "Pez Roca",
+      "description": "Un pez robusto y poco común.",
+      "category": "fish",
+      "color": "#7A6F5D",
+      "sell_price": 10,
+      "buy_price": 14
     }
   ]
 }

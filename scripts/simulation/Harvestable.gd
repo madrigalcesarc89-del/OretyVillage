@@ -23,10 +23,11 @@ func _ready() -> void:
 
 
 ## Agotado = aviso sin entregar. Si entrega (vía super), se agota.
+## Resuelve pool o gives fijo igual que Interactable (caja intacta).
 func interact(player: Node2D) -> String:
 	if not is_available:
 		return depleted_message
-	if gives_item_id.is_empty() or ItemDatabase.get_item(gives_item_id).is_empty():
+	if _give_id().is_empty() or ItemDatabase.get_item(_give_id()).is_empty():
 		return message
 	var line: String = super.interact(player)
 	_deplete()
