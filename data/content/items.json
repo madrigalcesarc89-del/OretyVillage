@@ -44,6 +44,14 @@
       "color": "#7A6F5D",
       "sell_price": 10,
       "buy_price": 14
+    },
+    {
+      "id": "silla",
+      "name": "Silla",
+      "description": "Una silla simple para la casa.",
+      "category": "furniture",
+      "color": "#8B5A2B",
+      "buy_price": 30
     }
   ]
 }

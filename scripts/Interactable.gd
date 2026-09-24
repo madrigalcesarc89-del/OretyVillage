@@ -19,6 +19,10 @@ extends Area2D
 ## con stock del takes → VENDE; sin stock → COMPRA si hay fondos.
 @export var takes_item_id := ""
 @export var sells_item_id := ""
+## Fase 6 — pool de compra: se ofrece el PRIMERO asequible en orden
+## (vacío = sells_item_id legado). Ordenar caro-primero para que lo
+## caro sea alcanzable (ver Puesto). Futura tienda con UI lo supera.
+@export var sells_pool: PackedStringArray = []
 ## Fase 5 pesca — el puesto vende el primero del pool en stock
 ## (vacío = takes_item_id legado, mensajes antiguos verbatim).
 @export var takes_pool: PackedStringArray = []
@@ -60,8 +64,11 @@ func interact(player: Node2D) -> String:
 		for sid in sell_ids:
 			if inv.has_item(String(sid), 1):
 				return _sell_one(player, String(sid))
+		var bid := _buy_id(player)
+		if not bid.is_empty():
+			return _buy_one(player, bid)
 		if not sells_item_id.is_empty():
-			return _buy_one(player)
+			return _buy_one(player, sells_item_id)
 		if sell_ids.size() == 1:
 			var only := String(sell_ids[0])
 			return "No tienes %s para vender." % String(ItemDatabase.get_item(only).get("name", only))
@@ -118,8 +125,9 @@ func _sell_one(player: Node2D, item_id: String = "") -> String:
 
 
 ## Compra 1 unidad al buy_price de items.json. Sin fondos = aviso, sin cambios.
-func _buy_one(player: Node2D) -> String:
-	var data := ItemDatabase.get_item(sells_item_id)
+func _buy_one(player: Node2D, item_id: String = "") -> String:
+	var bid := item_id if not item_id.is_empty() else sells_item_id
+	var data := ItemDatabase.get_item(bid)
 	if data.is_empty():
 		return message
 	var price := int(data.get("buy_price", 0))
@@ -130,5 +138,17 @@ func _buy_one(player: Node2D) -> String:
 		return "No tienes monedas suficientes (cuesta %d)." % price
 	player.set("coins", coins - price)
 	var inv: Inventory = player.get("inventory")
-	var total: int = inv.add_item(sells_item_id, 1)
+	var total: int = inv.add_item(bid, 1)
 	return "Compraste 1 %s por %d monedas. Total: %d monedas, %d %s." % [String(data["name"]), price, int(player.get("coins")), total, String(data["name"])]
+
+
+## Primera oferta asequible del sells_pool ("" si ninguna).
+func _buy_id(player: Node2D) -> String:
+	if sells_pool.is_empty():
+		return ""
+	var coins: int = int(player.get("coins"))
+	for bid in sells_pool:
+		var data := ItemDatabase.get_item(String(bid))
+		if not data.is_empty() and coins >= int(data.get("buy_price", 0)) and int(data.get("buy_price", 0)) > 0:
+			return String(bid)
+	return ""

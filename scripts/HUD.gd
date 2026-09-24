@@ -4,6 +4,7 @@ extends CanvasLayer
 @onready var joystick: TouchJoystick = $Joystick
 @onready var interact_button: Button = $InteractButton
 @onready var message_label: Label = $MessageLabel
+@onready var place_button: Button = $PlaceButton
 
 var player: VillagePlayer = null
 var _msg_tween: Tween = null
@@ -16,6 +17,8 @@ func _ready() -> void:
 		call_deferred("_resolver_player_diferido")
 	interact_button.visible = false
 	interact_button.pressed.connect(_on_interact_pressed)
+	place_button.visible = false
+	place_button.pressed.connect(_on_place_pressed)
 	message_label.modulate.a = 0.0
 
 
@@ -30,6 +33,27 @@ func _process(_delta: float) -> void:
 		return
 	player.touch_vector = joystick.output
 	interact_button.visible = player.interact_target != null
+	_update_place_button()
+
+
+## Fase 6 — botón Colocar: solo con silla + placer (casa) + sin arrastre.
+## Sin tipado estático a propósito (duck-typing, igual que interact_target).
+func _placer():
+	return get_tree().get_first_node_in_group("furniture_placer")
+
+
+func _update_place_button() -> void:
+	var pl = _placer()
+	if pl == null or pl.is_carrying():
+		place_button.visible = false
+		return
+	place_button.visible = bool(player.get("inventory").call("has_item", "silla", 1))
+
+
+func _on_place_pressed() -> void:
+	var pl = _placer()
+	if pl != null:
+		pl.start_placing()
 
 
 func show_message(text: String) -> void:
