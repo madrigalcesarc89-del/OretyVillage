@@ -19,6 +19,13 @@ func _ready() -> void:
 	call_deferred("queue_redraw")
 
 
+func cancel() -> void:
+	_touch_id = -1
+	_mouse_down = false
+	output = Vector2.ZERO
+	queue_redraw()
+
+
 func _center() -> Vector2:
 	return size * 0.5
 
@@ -55,7 +62,7 @@ func _update_output(pos: Vector2) -> void:
 
 func _draw() -> void:
 	var c := _center()
-	draw_circle(c, RADIUS + 12.0, Color(0, 0, 0, 0.35))
-	draw_circle(c, RADIUS, Color(1, 1, 1, 0.30))
-	draw_arc(c, RADIUS, 0, TAU, 48, Color(1, 1, 1, 0.75), 4.0)
-	draw_circle(c + output * (RADIUS - KNOB), KNOB, Color(1, 1, 1, 0.60))
+	draw_circle(c, RADIUS + 12.0, Color(0.227, 0.165, 0.290, 0.40))
+	draw_circle(c, RADIUS, Color(1.0, 0.965, 0.910, 0.28))
+	draw_arc(c, RADIUS, 0, TAU, 48, Color(0.878, 0.478, 0.298, 0.95), 6.0)
+	draw_circle(c + output * (RADIUS - KNOB), KNOB, Color(0.878, 0.478, 0.298, 0.88))

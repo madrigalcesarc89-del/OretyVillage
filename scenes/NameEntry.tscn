@@ -19,7 +19,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.10, 0.05, 0.20, 1)
+color = Color(1, 0.965, 0.91, 1)
 
 [node name="Titulo" type="Label" parent="UIRoot"]
 anchor_left = 0.5

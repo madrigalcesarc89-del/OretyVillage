@@ -6,6 +6,7 @@ extends CanvasLayer
 
 
 func _ready() -> void:
+	$UIRoot.theme = OretyTheme.make()
 	%StartButton.disabled = true
 	%StartButton.pressed.connect(_on_confirm)
 	%NameField.text_changed.connect(_on_text_changed)

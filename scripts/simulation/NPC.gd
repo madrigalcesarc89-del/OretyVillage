@@ -180,15 +180,25 @@ func _on_body_exited(body: Node2D) -> void:
 		_line_idx = 0
 
 
-## Regala el primer ítem regalable en stock (+1 amistad). Sin stock = aviso.
-## El HUD lo llama con el jugador; vagabundeo/rutina/diálogo intactos.
-func give_gift(player: Node2D) -> String:
+## Regala un ítem (+1 amistad).
+## item_id vacío = el primer regalable en stock (comportamiento anterior).
+## Un id concreto lo usa el menú de regalos; si no es regalable, no gasta nada.
+func give_gift(player: Node2D, item_id: String = "") -> String:
 	var inv: Inventory = player.get("inventory")
-	for gid in GIFT_ORDER:
+	var order: Array = GIFT_ORDER
+	if not item_id.is_empty():
+		if not GIFT_ORDER.has(item_id):
+			return "Eso no se puede regalar."
+		order = [item_id]
+	for gid in order:
 		var id := String(gid)
 		if inv.has_item(id, 1):
 			inv.remove_item(id, 1)
 			friendship += 1
 			var data := ItemDatabase.get_item(id)
 			return "¡Gracias por el regalo (%s)! %s parece feliz. (Amistad: %d)" % [String(data.get("name", id)), _name, friendship]
+	if not item_id.is_empty():
+		var named := ItemDatabase.get_item(item_id)
+		var label := String(named.get("name", item_id)) if not named.is_empty() else item_id
+		return "No tienes %s para regalar." % label
 	return "No tienes nada para regalar."

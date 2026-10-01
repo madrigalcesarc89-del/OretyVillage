@@ -152,3 +152,56 @@ func _buy_id(player: Node2D) -> String:
 		if not data.is_empty() and coins >= int(data.get("buy_price", 0)) and int(data.get("buy_price", 0)) > 0:
 			return String(bid)
 	return ""
+
+
+## --- Tienda con UI (visual-polish). interact() no cambia. ---
+
+func is_vendor() -> bool:
+	return not _sell_candidates().is_empty() or not sells_pool.is_empty() or not sells_item_id.is_empty()
+
+
+func vendor_sell_list() -> Array:
+	var out: Array = []
+	for sid in _sell_candidates():
+		var data := ItemDatabase.get_item(String(sid))
+		if data.is_empty():
+			continue
+		var price := int(data.get("sell_price", 0))
+		if price <= 0:
+			continue
+		out.append({
+			"id": String(sid),
+			"name": String(data.get("name", sid)),
+			"price": price,
+		})
+	return out
+
+
+func vendor_buy_list() -> Array:
+	var ids: Array = []
+	if not sells_pool.is_empty():
+		ids = Array(sells_pool)
+	elif not sells_item_id.is_empty():
+		ids = [sells_item_id]
+	var out: Array = []
+	for bid in ids:
+		var data := ItemDatabase.get_item(String(bid))
+		if data.is_empty():
+			continue
+		var price := int(data.get("buy_price", 0))
+		if price <= 0:
+			continue
+		out.append({
+			"id": String(bid),
+			"name": String(data.get("name", bid)),
+			"price": price,
+		})
+	return out
+
+
+func confirm_sell(player: Node2D, item_id: String) -> String:
+	return _sell_one(player, item_id)
+
+
+func confirm_buy(player: Node2D, item_id: String) -> String:
+	return _buy_one(player, item_id)
