@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var interact_button: Button = $InteractButton
 @onready var message_label: Label = $MessageLabel
 @onready var place_button: Button = $PlaceButton
+@onready var gift_button: Button = $GiftButton
 
 var player: VillagePlayer = null
 var _msg_tween: Tween = null
@@ -19,6 +20,8 @@ func _ready() -> void:
 	interact_button.pressed.connect(_on_interact_pressed)
 	place_button.visible = false
 	place_button.pressed.connect(_on_place_pressed)
+	gift_button.visible = false
+	gift_button.pressed.connect(_on_gift_pressed)
 	message_label.modulate.a = 0.0
 
 
@@ -34,6 +37,7 @@ func _process(_delta: float) -> void:
 	player.touch_vector = joystick.output
 	interact_button.visible = player.interact_target != null
 	_update_place_button()
+	_update_gift_button()
 
 
 ## Fase 6 — botón Colocar: solo con silla + placer (casa) + sin arrastre.
@@ -54,6 +58,37 @@ func _on_place_pressed() -> void:
 	var pl = _placer()
 	if pl != null:
 		pl.start_placing()
+
+
+## Fase 7 — botón Regalar: visible cerca de Mango con regalable en mano.
+func _mango_nearby():
+	var t: Node2D = player.interact_target if player != null else null
+	if t != null and t.has_method("give_gift"):
+		return t
+	return null
+
+
+func _update_gift_button() -> void:
+	var npc = _mango_nearby()
+	if npc == null:
+		gift_button.visible = false
+		return
+	gift_button.visible = _has_giftable()
+
+
+func _has_giftable() -> bool:
+	var inv: Inventory = player.get("inventory")
+	for gid in ["pez_sol", "pez_luna", "pez_roca", "fibra", "piedra"]:
+		if inv.has_item(gid, 1):
+			return true
+	return false
+
+
+func _on_gift_pressed() -> void:
+	var npc = _mango_nearby()
+	if npc == null:
+		return
+	show_message(String(npc.call("give_gift", player)))
 
 
 func show_message(text: String) -> void:

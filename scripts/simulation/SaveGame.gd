@@ -25,16 +25,26 @@ func _process(delta: float) -> void:
 
 
 ## Foto serializable del estado esencial (dict JSON-safe).
+## Fase 7: suma friendship {npc_id: nivel} (saves viejos la omiten).
 static func capture(player: Node2D, world_path: String) -> Dictionary:
+	var friendship := {}
+	var tree := player.get_tree()
+	if tree != null:
+		for n in tree.get_nodes_in_group("npc"):
+			var id := String(n.get("npc_id"))
+			if not id.is_empty():
+				friendship[id] = int(n.get("friendship"))
 	return {
 		"coins": int(player.get("coins")),
 		"inventory": player.get("inventory").call("get_all"),
 		"scene": world_path,
 		"pos": [float(player.position.x), float(player.position.y)],
+		"friendship": friendship,
 	}
 
 
-## Aplica una foto sobre el jugador actual (tolera fichas parciales).
+## Aplica una foto sobre el jugador actual (tolera fichas parciales,
+## incluidos saves viejos sin "friendship": amistad queda en 0).
 static func apply_to(player: Node2D, data: Dictionary) -> void:
 	if data.is_empty():
 		return
@@ -47,6 +57,13 @@ static func apply_to(player: Node2D, data: Dictionary) -> void:
 		var inv: Inventory = player.get("inventory")
 		for k in (data["inventory"] as Dictionary).keys():
 			inv.add_item(String(k), int((data["inventory"] as Dictionary)[k]))
+	if data.has("friendship"):
+		var tree := player.get_tree()
+		if tree != null:
+			for n in tree.get_nodes_in_group("npc"):
+				var id := String(n.get("npc_id"))
+				if (data["friendship"] as Dictionary).has(id):
+					n.set("friendship", int((data["friendship"] as Dictionary)[id]))
 
 
 static func save_game(player: Node2D, world_path: String) -> bool:

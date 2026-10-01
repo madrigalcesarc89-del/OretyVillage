@@ -36,6 +36,11 @@ var _pause_left := 0.0
 var _name := ""
 var _lines: Array = []
 var _line_idx := 0
+## Fase 7 — afinidad (persistida en SaveGame como friendship/{id}).
+var friendship := 0
+## Prioridad de regalo: peces primero (es un gato), luego el resto.
+## La silla (mueble) queda excluida a propósito.
+const GIFT_ORDER: Array = ["pez_sol", "pez_luna", "pez_roca", "fibra", "piedra"]
 ## Paso 4: descanso nocturno. Con GameTime por señal (event-driven).
 var _resting := false
 
@@ -51,6 +56,7 @@ func is_day() -> bool:
 
 func _ready() -> void:
 	super._ready()
+	add_to_group("npc")
 	var data := NPCDatabase.get_npc(npc_id)
 	if data.is_empty():
 		return
@@ -164,3 +170,17 @@ func _on_body_exited(body: Node2D) -> void:
 	super._on_body_exited(body)
 	if body.is_in_group("player"):
 		_line_idx = 0
+
+
+## Regala el primer ítem regalable en stock (+1 amistad). Sin stock = aviso.
+## El HUD lo llama con el jugador; vagabundeo/rutina/diálogo intactos.
+func give_gift(player: Node2D) -> String:
+	var inv: Inventory = player.get("inventory")
+	for gid in GIFT_ORDER:
+		var id := String(gid)
+		if inv.has_item(id, 1):
+			inv.remove_item(id, 1)
+			friendship += 1
+			var data := ItemDatabase.get_item(id)
+			return "¡Gracias por el regalo (%s)! Mango parece feliz. (Amistad: %d)" % [String(data.get("name", id)), friendship]
+	return "No tienes nada para regalar."
