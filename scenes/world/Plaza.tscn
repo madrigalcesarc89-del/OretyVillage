@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/Interactable.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2"]
@@ -7,6 +7,16 @@
 [ext_resource type="PackedScene" path="res://scenes/world/NPC.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/simulation/Harvestable.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/Door.gd" id="7"]
+[ext_resource type="Texture2D" path="res://assets/tiles/grass.png" id="8"]
+[ext_resource type="Texture2D" path="res://assets/tiles/path.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/tiles/plaza.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/props/crate.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/props/well.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/props/stall.png" id="13"]
+[ext_resource type="Texture2D" path="res://assets/props/door.png" id="14"]
+[ext_resource type="Texture2D" path="res://assets/props/tree.png" id="15"]
+[ext_resource type="Texture2D" path="res://assets/props/flowers.png" id="16"]
+[ext_resource type="Texture2D" path="res://assets/props/lantern.png" id="17"]
 
 [sub_resource type="WorldBoundaryShape2D" id="wb_l"]
 normal = Vector2(1, 0)
@@ -29,29 +39,137 @@ size = Vector2(160, 160)
 
 [node name="Plaza" type="Node2D"]
 
-[node name="Pasto" type="ColorRect" parent="."]
+[node name="Pasto" type="TextureRect" parent="."]
 offset_right = 2160.0
 offset_bottom = 3840.0
-color = Color(0.16, 0.30, 0.18, 1)
+mouse_filter = 2
+texture = ExtResource("8")
+stretch_mode = 1
+texture_repeat = 1
 
-[node name="CaminoH" type="ColorRect" parent="."]
+[node name="CaminoH" type="TextureRect" parent="."]
 offset_top = 1840.0
 offset_right = 2160.0
 offset_bottom = 2000.0
-color = Color(0.55, 0.42, 0.26, 1)
+mouse_filter = 2
+texture = ExtResource("9")
+stretch_mode = 1
+texture_repeat = 1
 
-[node name="CaminoV" type="ColorRect" parent="."]
+[node name="CaminoV" type="TextureRect" parent="."]
 offset_left = 1000.0
 offset_right = 1160.0
 offset_bottom = 3840.0
-color = Color(0.55, 0.42, 0.26, 1)
+mouse_filter = 2
+texture = ExtResource("9")
+stretch_mode = 1
+texture_repeat = 1
 
-[node name="PlazaCentro" type="ColorRect" parent="."]
+[node name="PlazaCentro" type="TextureRect" parent="."]
 offset_left = 630.0
 offset_top = 1470.0
 offset_right = 1530.0
 offset_bottom = 2370.0
-color = Color(0.75, 0.70, 0.58, 1)
+mouse_filter = 2
+texture = ExtResource("10")
+stretch_mode = 1
+texture_repeat = 1
+
+[node name="Decor" type="Node2D" parent="."]
+
+[node name="Arbol1" type="Sprite2D" parent="Decor"]
+position = Vector2(220, 520)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("15")
+
+[node name="Arbol2" type="Sprite2D" parent="Decor"]
+position = Vector2(1960, 480)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("15")
+flip_h = true
+
+[node name="Arbol3" type="Sprite2D" parent="Decor"]
+position = Vector2(180, 2100)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("15")
+
+[node name="Arbol4" type="Sprite2D" parent="Decor"]
+position = Vector2(1980, 2300)
+scale = Vector2(0.82, 0.82)
+texture = ExtResource("15")
+flip_h = true
+
+[node name="Arbol5" type="Sprite2D" parent="Decor"]
+position = Vector2(280, 3300)
+scale = Vector2(0.68, 0.68)
+texture = ExtResource("15")
+
+[node name="Arbol6" type="Sprite2D" parent="Decor"]
+position = Vector2(1880, 3500)
+scale = Vector2(0.78, 0.78)
+texture = ExtResource("15")
+flip_h = true
+
+[node name="Flores1" type="Sprite2D" parent="Decor"]
+position = Vector2(820, 1680)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("16")
+
+[node name="Flores2" type="Sprite2D" parent="Decor"]
+position = Vector2(1340, 1680)
+scale = Vector2(0.38, 0.38)
+texture = ExtResource("16")
+
+[node name="Flores3" type="Sprite2D" parent="Decor"]
+position = Vector2(780, 2160)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("16")
+
+[node name="Flores4" type="Sprite2D" parent="Decor"]
+position = Vector2(1380, 2160)
+scale = Vector2(0.36, 0.36)
+texture = ExtResource("16")
+flip_h = true
+
+[node name="Flores5" type="Sprite2D" parent="Decor"]
+position = Vector2(420, 1920)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("16")
+
+[node name="Flores6" type="Sprite2D" parent="Decor"]
+position = Vector2(1740, 1920)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("16")
+
+[node name="Flores7" type="Sprite2D" parent="Decor"]
+position = Vector2(1080, 3000)
+scale = Vector2(0.36, 0.36)
+texture = ExtResource("16")
+
+[node name="Flores8" type="Sprite2D" parent="Decor"]
+position = Vector2(600, 900)
+scale = Vector2(0.32, 0.32)
+texture = ExtResource("16")
+
+[node name="Farol1" type="Sprite2D" parent="Decor"]
+position = Vector2(520, 1600)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("17")
+
+[node name="Farol2" type="Sprite2D" parent="Decor"]
+position = Vector2(1640, 1680)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("17")
+
+[node name="Farol3" type="Sprite2D" parent="Decor"]
+position = Vector2(900, 280)
+scale = Vector2(0.48, 0.48)
+texture = ExtResource("17")
+
+[node name="Farol4" type="Sprite2D" parent="Decor"]
+position = Vector2(1260, 280)
+scale = Vector2(0.48, 0.48)
+texture = ExtResource("17")
 
 [node name="Walls" type="StaticBody2D" parent="."]
 
@@ -85,12 +203,9 @@ depleted_message = "Esta caja está vacía, vuelve más tarde. 📦"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Caja"]
 shape = SubResource("box_shape")
 
-[node name="Visual" type="ColorRect" parent="Caja"]
-offset_left = -48.0
-offset_top = -48.0
-offset_right = 48.0
-offset_bottom = 48.0
-color = Color(0.55, 0.36, 0.2, 1)
+[node name="Visual" type="Sprite2D" parent="Caja"]
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("11")
 
 [node name="Pozo" type="Area2D" parent="."]
 position = Vector2(1500, 2300)
@@ -104,12 +219,9 @@ depleted_message = "El pozo está tranquilo... vuelve más tarde. 🎣"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pozo"]
 shape = SubResource("box_shape")
 
-[node name="Visual" type="ColorRect" parent="Pozo"]
-offset_left = -55.0
-offset_top = -55.0
-offset_right = 55.0
-offset_bottom = 55.0
-color = Color(0.30, 0.45, 0.65, 1)
+[node name="Visual" type="Sprite2D" parent="Pozo"]
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("12")
 
 [node name="Mango" parent="." instance=ExtResource("5")]
 npc_id = "mango"
@@ -129,12 +241,9 @@ sells_pool = PackedStringArray("silla", "fibra")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Puesto"]
 shape = SubResource("box_shape")
 
-[node name="Visual" type="ColorRect" parent="Puesto"]
-offset_left = -55.0
-offset_top = -55.0
-offset_right = 55.0
-offset_bottom = 55.0
-color = Color(0.85, 0.65, 0.20, 1)
+[node name="Visual" type="Sprite2D" parent="Puesto"]
+scale = Vector2(0.48, 0.48)
+texture = ExtResource("13")
 
 [node name="PuertaNorte" type="Area2D" parent="."]
 position = Vector2(1080, 120)
@@ -147,12 +256,9 @@ go_message = "¡A casa! 🏠"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PuertaNorte"]
 shape = SubResource("box_shape")
 
-[node name="Visual" type="ColorRect" parent="PuertaNorte"]
-offset_left = -55.0
-offset_top = -65.0
-offset_right = 55.0
-offset_bottom = 65.0
-color = Color(0.60, 0.30, 0.22, 1)
+[node name="Visual" type="Sprite2D" parent="PuertaNorte"]
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("14")
 
 [node name="DayNight" type="CanvasModulate" parent="."]
 script = ExtResource("4")
