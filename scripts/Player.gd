@@ -11,6 +11,8 @@ var interact_target: Interactable = null
 var inventory: Inventory = null
 ## Fase 4 paso 2 — monedas de sesión (el guardado es fase posterior).
 var coins: int = 0
+## Nombre elegido en NameEntry (default para saves viejos).
+var player_name := "Viajero"
 
 @onready var sprite: Sprite2D = $Sprite2D
 

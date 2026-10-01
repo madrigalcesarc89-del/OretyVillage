@@ -154,15 +154,23 @@ func arrive() -> void:
 ## Diálogo genérico: cada llamada devuelve "Nombre: línea" y avanza.
 ## Tras la última devuelve "" (el HUD limpia) y reinicia en la 1ª.
 ## Cualquier NPC con array "dialogue" en su ficha lo reutiliza tal cual.
+## Soporta placeholder {player} (nombre del jugador, default "Viajero").
 func advance_dialogue() -> String:
 	if _lines.is_empty():
 		return ""
 	if _line_idx >= _lines.size():
 		_line_idx = 0
 		return ""
-	var line := "%s: %s" % [_name, String(_lines[_line_idx])]
+	var line := "%s: %s" % [_name, String(_lines[_line_idx]).replace("{player}", _player_name())]
 	_line_idx += 1
 	return line
+
+
+func _player_name() -> String:
+	var p: Node = get_tree().get_first_node_in_group("player")
+	if p == null:
+		return "Viajero"
+	return String(p.get("player_name")) if String(p.get("player_name")) != "" else "Viajero"
 
 
 ## Al alejarse se resetea la secuencia (hereda el desregistro de Interactable).

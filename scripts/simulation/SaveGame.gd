@@ -40,6 +40,7 @@ static func capture(player: Node2D, world_path: String) -> Dictionary:
 		"scene": world_path,
 		"pos": [float(player.position.x), float(player.position.y)],
 		"friendship": friendship,
+		"player_name": String(player.get("player_name")),
 	}
 
 
@@ -53,6 +54,8 @@ static func apply_to(player: Node2D, data: Dictionary) -> void:
 		player.position = Vector2(float(pos[0]), float(pos[1]))
 	if data.has("coins"):
 		player.set("coins", int(data["coins"]))
+	if data.has("player_name"):
+		player.set("player_name", String(data["player_name"]))
 	if data.has("inventory"):
 		var inv: Inventory = player.get("inventory")
 		for k in (data["inventory"] as Dictionary).keys():

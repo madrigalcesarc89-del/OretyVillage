@@ -23,7 +23,7 @@
       "position": [800, 2350],
       "wander_radius": 180,
       "dialogue": [
-        "¡Hola! ¡Viniste! Soy Orety. 💜",
+        "¡Hola, {player}! ¡Viniste! Soy Orety. 💜",
         "Llevo aquí toda la vida... conozco cada rincón.",
         "Perdón, hablo mucho cuando me emociono...",
         "Si necesitas algo, ¡yo te ayudo!"

@@ -37,10 +37,14 @@ func _save_current() -> void:
 	SaveGame.save_game(p, str(world.scene_file_path))
 
 
-## Carga inicial: reemplaza el mundo default solo si hay guardado.
+var _pending_name := ""
+
+
+## Carga inicial: sin guardado muestra NameEntry; con guardado, como antes.
 func _load_saved_state() -> void:
 	var data: Dictionary = SaveGame.load_data()
 	if data.is_empty():
+		_show_name_entry()
 		return
 	var scene := String(data.get("scene", ""))
 	if scene == "":
@@ -62,6 +66,30 @@ func _load_saved_state() -> void:
 	var p: Node = world.get_node_or_null("Player")
 	if p != null:
 		SaveGame.apply_to(p, data)
+
+
+## Primera vez: NameEntry en el slot de mundo (sin Player dentro).
+func _show_name_entry() -> void:
+	var old: Node = get_node_or_null("World")
+	if old != null:
+		remove_child(old)
+		old.queue_free()
+	_instantiate_world("res://scenes/NameEntry.tscn")
+
+
+## Tras confirmar el nombre: Plaza fresca con el nombre aplicado y guardado.
+func begin_from_name(player_name: String) -> void:
+	_pending_name = player_name
+	goto_world("res://scenes/world/Plaza.tscn", Vector2(1080, 2600))
+	var world: Node = get_node_or_null("World")
+	if world == null:
+		return
+	var np: Node = world.get_node_or_null("Player")
+	if np == null:
+		return
+	np.set("player_name", _pending_name)
+	_pending_name = ""
+	_save_current()
 
 
 func _instantiate_world(path: String) -> Node:
