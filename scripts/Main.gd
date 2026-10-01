@@ -18,6 +18,61 @@ const WORLD_LIMITS := {
 func _ready() -> void:
 	add_to_group("world_manager")
 	call_deferred("_apply_camera_limits")
+	call_deferred("_load_saved_state")
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
+		_save_current()
+
+
+## Guarda el estado actual si hay jugador y mundo con escena conocida.
+func _save_current() -> void:
+	var world: Node = get_node_or_null("World")
+	if world == null or str(world.scene_file_path) == "":
+		return
+	var p: Node = world.get_node_or_null("Player")
+	if p == null:
+		return
+	SaveGame.save_game(p, str(world.scene_file_path))
+
+
+## Carga inicial: reemplaza el mundo default solo si hay guardado.
+func _load_saved_state() -> void:
+	var data: Dictionary = SaveGame.load_data()
+	if data.is_empty():
+		return
+	var scene := String(data.get("scene", ""))
+	if scene == "":
+		return
+	var old: Node = get_node_or_null("World")
+	if old != null and str(old.scene_file_path) == scene:
+		var p0: Node = old.get_node_or_null("Player")
+		if p0 != null:
+			SaveGame.apply_to(p0, data)
+		return
+	if old != null:
+		remove_child(old)
+		old.queue_free()
+	_instantiate_world(scene)
+	var world: Node = get_node_or_null("World")
+	if world == null:
+		return
+	_apply_camera_limits()
+	var p: Node = world.get_node_or_null("Player")
+	if p != null:
+		SaveGame.apply_to(p, data)
+
+
+func _instantiate_world(path: String) -> Node:
+	var packed: PackedScene = load(path)
+	if packed == null or not packed.can_instantiate():
+		push_error("Main: escena inválida '%s'." % path)
+		return null
+	var world: Node = packed.instantiate()
+	world.name = "World"
+	add_child(world)
+	return world
 
 
 func _world_key(world: Node) -> String:
@@ -52,15 +107,13 @@ func goto_world(path: String, spawn: Vector2) -> void:
 		if p != null:
 			inv_data = p.get("inventory").call("get_all")
 			coins = int(p.get("coins"))
+	_save_current()
+	if old != null:
 		remove_child(old)
 		old.queue_free()
-	var packed: PackedScene = load(path)
-	if packed == null or not packed.can_instantiate():
-		push_error("Main: escena inválida '%s'." % path)
+	var world: Node = _instantiate_world(path)
+	if world == null:
 		return
-	var world: Node = packed.instantiate()
-	world.name = "World"
-	add_child(world)
 	_apply_camera_limits()
 	var np: Node = world.get_node_or_null("Player")
 	if np != null:

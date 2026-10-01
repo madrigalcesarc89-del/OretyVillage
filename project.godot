@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 [autoload]
 
 GameTime="*res://scripts/simulation/TimeManager.gd"
+SaveGame="*res://scripts/simulation/SaveGame.gd"
 
 [display]
 
