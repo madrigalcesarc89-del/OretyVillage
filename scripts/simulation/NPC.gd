@@ -182,5 +182,5 @@ func give_gift(player: Node2D) -> String:
 			inv.remove_item(id, 1)
 			friendship += 1
 			var data := ItemDatabase.get_item(id)
-			return "¡Gracias por el regalo (%s)! Mango parece feliz. (Amistad: %d)" % [String(data.get("name", id)), friendship]
+			return "¡Gracias por el regalo (%s)! %s parece feliz. (Amistad: %d)" % [String(data.get("name", id)), _name, friendship]
 	return "No tienes nada para regalar."

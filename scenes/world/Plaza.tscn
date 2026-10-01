@@ -114,6 +114,9 @@ color = Color(0.30, 0.45, 0.65, 1)
 [node name="Mango" parent="." instance=ExtResource("5")]
 npc_id = "mango"
 
+[node name="Orety" parent="." instance=ExtResource("5")]
+npc_id = "orety"
+
 [node name="Puesto" type="Area2D" parent="."]
 position = Vector2(1700, 1500)
 script = ExtResource("1")

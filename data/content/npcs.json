@@ -13,6 +13,21 @@
         "La plaza está muy tranquila hoy...",
         "¿Viste mi rosa? ¡Aquí está! 🌹"
       ]
+    },
+    {
+      "id": "orety",
+      "name": "Orety",
+      "description": "Tu mejor amigo en el pueblo. Te espera en la plaza.",
+      "sprite": "res://assets/import/orety_idle.png",
+      "scale": 0.35,
+      "position": [800, 2350],
+      "wander_radius": 180,
+      "dialogue": [
+        "¡Hola! ¡Viniste! Soy Orety. 💜",
+        "Llevo aquí toda la vida... conozco cada rincón.",
+        "Perdón, hablo mucho cuando me emociono...",
+        "Si necesitas algo, ¡yo te ayudo!"
+      ]
     }
   ]
 }
