@@ -14,7 +14,7 @@ var _mouse_down := false
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	custom_minimum_size = Vector2(RADIUS * 2.0 + 40.0, RADIUS * 2.0 + 40.0)
+	custom_minimum_size = Vector2(340.0, 340.0)
 	visible = true
 	call_deferred("queue_redraw")
 
@@ -23,7 +23,7 @@ func _center() -> Vector2:
 	return size * 0.5
 
 
-func gui_input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed and _touch_id == -1:
 			_touch_id = event.index
