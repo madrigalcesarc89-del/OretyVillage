@@ -37,6 +37,9 @@ func _physics_process(delta: float) -> void:
 func _animar(dir: Vector2, delta: float) -> void:
 	if absf(velocity.x) > 1.0:
 		sprite.flip_h = velocity.x < 0.0
+	# WalkAnim (si existe) hace los frames. El bob queda como respaldo.
+	if sprite.get_node_or_null("WalkAnim") != null:
+		return
 	if dir.length() > 0.05:
 		# Caminar procedural: no hay frames dedicados, solo idle como base.
 		_bob += delta * 10.0
