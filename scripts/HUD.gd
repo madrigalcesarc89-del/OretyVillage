@@ -106,7 +106,7 @@ func _label_interact() -> void:
 		interact_button.text = "Hablar"
 	elif target.has_method("is_vendor") and bool(target.call("is_vendor")):
 		interact_button.text = "Tienda"
-	elif String(target.get("target_scene")) != "":
+	elif "target_scene" in target and String(target.get("target_scene")) != "":
 		interact_button.text = "Ir"
 	else:
 		interact_button.text = "Usar"
