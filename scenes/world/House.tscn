@@ -30,7 +30,11 @@ distance = -1280.0
 [sub_resource type="CircleShape2D" id="door_shape"]
 radius = 120.0
 
+[sub_resource type="RectangleShape2D" id="zone_wood"]
+size = Vector2(720, 1280)
+
 [node name="House" type="Node2D"]
+y_sort_enabled = true
 groups = ["player_house"]
 
 [node name="Suelo" type="TextureRect" parent="."]
@@ -98,6 +102,17 @@ texture = ExtResource("8")
 
 [node name="Placer" type="Node2D" parent="."]
 script = ExtResource("5")
+
+[node name="ZonaMadera" type="Area2D" parent="."]
+position = Vector2(360, 640)
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+metadata/terrain_id = 3
+metadata/terrain_priority = 30
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaMadera"]
+shape = SubResource("zone_wood")
 
 [node name="DayNight" type="CanvasModulate" parent="."]
 script = ExtResource("3")

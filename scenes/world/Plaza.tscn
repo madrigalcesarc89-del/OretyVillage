@@ -37,7 +37,29 @@ distance = -3840.0
 [sub_resource type="RectangleShape2D" id="box_shape"]
 size = Vector2(160, 160)
 
+[sub_resource type="CircleShape2D" id="trunk"]
+radius = 28.0
+
+[sub_resource type="RectangleShape2D" id="counter"]
+size = Vector2(140, 80)
+
+[sub_resource type="CircleShape2D" id="base_round"]
+radius = 60.0
+
+[sub_resource type="RectangleShape2D" id="base_box"]
+size = Vector2(120, 80)
+
+[sub_resource type="RectangleShape2D" id="zone_stone"]
+size = Vector2(900, 900)
+
+[sub_resource type="RectangleShape2D" id="zone_path_h"]
+size = Vector2(2160, 160)
+
+[sub_resource type="RectangleShape2D" id="zone_path_v"]
+size = Vector2(160, 3840)
+
 [node name="Plaza" type="Node2D"]
+y_sort_enabled = true
 
 [node name="Pasto" type="TextureRect" parent="."]
 offset_right = 2160.0
@@ -109,6 +131,42 @@ position = Vector2(1880, 3500)
 scale = Vector2(0.78, 0.78)
 texture = ExtResource("15")
 flip_h = true
+
+[node name="Tronco1" type="StaticBody2D" parent="."]
+position = Vector2(220, 663)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tronco1"]
+shape = SubResource("trunk")
+
+[node name="Tronco2" type="StaticBody2D" parent="."]
+position = Vector2(1960, 605)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tronco2"]
+shape = SubResource("trunk")
+
+[node name="Tronco3" type="StaticBody2D" parent="."]
+position = Vector2(180, 2234)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tronco3"]
+shape = SubResource("trunk")
+
+[node name="Tronco4" type="StaticBody2D" parent="."]
+position = Vector2(1980, 2447)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tronco4"]
+shape = SubResource("trunk")
+
+[node name="Tronco5" type="StaticBody2D" parent="."]
+position = Vector2(280, 3422)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tronco5"]
+shape = SubResource("trunk")
+
+[node name="Tronco6" type="StaticBody2D" parent="."]
+position = Vector2(1880, 3640)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tronco6"]
+shape = SubResource("trunk")
 
 [node name="Flores1" type="Sprite2D" parent="Decor"]
 position = Vector2(820, 1680)
@@ -207,6 +265,12 @@ shape = SubResource("box_shape")
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("11")
 
+[node name="CajaSolida" type="StaticBody2D" parent="."]
+position = Vector2(700, 1540)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CajaSolida"]
+shape = SubResource("base_box")
+
 [node name="Pozo" type="Area2D" parent="."]
 position = Vector2(1500, 2300)
 script = ExtResource("6")
@@ -222,6 +286,12 @@ shape = SubResource("box_shape")
 [node name="Visual" type="Sprite2D" parent="Pozo"]
 scale = Vector2(0.46, 0.46)
 texture = ExtResource("12")
+
+[node name="PozoSolido" type="StaticBody2D" parent="."]
+position = Vector2(1500, 2350)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PozoSolido"]
+shape = SubResource("base_round")
 
 [node name="Mango" parent="." instance=ExtResource("5")]
 npc_id = "mango"
@@ -245,6 +315,12 @@ shape = SubResource("box_shape")
 scale = Vector2(0.48, 0.48)
 texture = ExtResource("13")
 
+[node name="PuestoSolido" type="StaticBody2D" parent="."]
+position = Vector2(1700, 1540)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PuestoSolido"]
+shape = SubResource("counter")
+
 [node name="PuertaNorte" type="Area2D" parent="."]
 position = Vector2(1080, 120)
 script = ExtResource("7")
@@ -259,6 +335,41 @@ shape = SubResource("box_shape")
 [node name="Visual" type="Sprite2D" parent="PuertaNorte"]
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("14")
+
+[node name="ZonasTerreno" type="Node2D" parent="."]
+
+[node name="ZonaPiedra" type="Area2D" parent="ZonasTerreno"]
+position = Vector2(1080, 1920)
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+metadata/terrain_id = 2
+metadata/terrain_priority = 30
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonasTerreno/ZonaPiedra"]
+shape = SubResource("zone_stone")
+
+[node name="ZonaCaminoH" type="Area2D" parent="ZonasTerreno"]
+position = Vector2(1080, 1920)
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+metadata/terrain_id = 1
+metadata/terrain_priority = 20
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonasTerreno/ZonaCaminoH"]
+shape = SubResource("zone_path_h")
+
+[node name="ZonaCaminoV" type="Area2D" parent="ZonasTerreno"]
+position = Vector2(1080, 1920)
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+metadata/terrain_id = 1
+metadata/terrain_priority = 20
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonasTerreno/ZonaCaminoV"]
+shape = SubResource("zone_path_v")
 
 [node name="DayNight" type="CanvasModulate" parent="."]
 script = ExtResource("4")

@@ -236,19 +236,19 @@ func _build_status() -> void:
 	chip.name = "StatusChip"
 	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	chip.z_index = 4
-	_anchor(chip, 1.0, 0.0, 1.0, 0.0, -250, 16, -16, 108)
+	_anchor(chip, 1.0, 0.0, 1.0, 0.0, -190, 14, -14, 92)
 	add_child(chip)
 	var box := VBoxContainer.new()
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	chip.add_child(box)
 	_status_name = Label.new()
 	_status_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_status_name.add_theme_font_size_override("font_size", 26)
+	_status_name.add_theme_font_size_override("font_size", 24)
 	box.add_child(_status_name)
 	_status_coins = Label.new()
 	_status_coins.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_status_coins.add_theme_color_override("font_color", Color("9a6230"))
-	_status_coins.add_theme_font_size_override("font_size", 24)
+	_status_coins.add_theme_font_size_override("font_size", 22)
 	box.add_child(_status_coins)
 
 

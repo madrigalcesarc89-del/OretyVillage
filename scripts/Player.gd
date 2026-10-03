@@ -15,8 +15,13 @@ var coins: int = 0
 var player_name := "Viajero"
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var sensor: TerrainSensor = $TerrainSensor
+@onready var steps: AudioStreamPlayer = $Steps
 
 var _bob := 0.0
+## Pasos: distancia acumulada; suena cada ~110px en movimiento.
+var _step_acc := 0.0
+const STEP_EVERY := 110.0
 
 
 func _ready() -> void:
@@ -32,6 +37,7 @@ func _physics_process(delta: float) -> void:
 	velocity = dir * speed
 	move_and_slide()
 	_animar(dir, delta)
+	_pasos(delta)
 
 
 func _animar(dir: Vector2, delta: float) -> void:
@@ -46,3 +52,16 @@ func _animar(dir: Vector2, delta: float) -> void:
 		sprite.position.y = sin(_bob) * 4.0
 	else:
 		sprite.position.y = lerpf(sprite.position.y, 0.0, minf(delta * 10.0, 1.0))
+
+
+func _pasos(delta: float) -> void:
+	if velocity.length() < 20.0:
+		_step_acc = 0.0
+		return
+	_step_acc += velocity.length() * delta
+	if _step_acc < STEP_EVERY:
+		return
+	_step_acc = 0.0
+	steps.stream = FootstepSynth.stream_por_terreno(sensor.terrain_id)
+	steps.pitch_scale = randf_range(0.92, 1.08)
+	steps.play()
