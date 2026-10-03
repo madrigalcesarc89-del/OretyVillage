@@ -6,7 +6,7 @@ extends Node
 @export var h_frames := 2
 @export var v_frames := 2
 @export var fps := 6.5
-## Fracción del alto del frame que ocupa el cuerpo (el resto es padding).
+## Solo se usa si no se puede medir el cuerpo opaco.
 @export var fill := 0.86
 
 var _sprite: Sprite2D
@@ -79,11 +79,57 @@ func _capture_idle() -> void:
 	_idle_scale = _sprite.scale
 	_captured = true
 	if _walk != null:
-		var idle_h := float(_idle.get_height()) * absf(_idle_scale.y)
-		var frame_h := float(_walk.get_height()) / float(maxi(v_frames, 1))
-		var shown := frame_h * fill
-		var s := idle_h / shown if shown > 0.0 else 1.0
-		_walk_scale = Vector2(s, s)
+		var idle_body := _body_height(_idle, 1, 1)
+		var walk_body := _body_height(_walk, h_frames, v_frames)
+		if idle_body > 2.0 and walk_body > 2.0:
+			# Mismo alto de cuerpo en pantalla. El lienzo idle tiene mucho
+			# padding; comparar el alto de la textura hacía el caminar más grande.
+			var s := (idle_body * absf(_idle_scale.y)) / walk_body
+			_walk_scale = Vector2(s, s)
+		else:
+			var frame_h := float(_walk.get_height()) / float(maxi(v_frames, 1))
+			var shown := frame_h * fill
+			var idle_h := float(_idle.get_height()) * absf(_idle_scale.y)
+			var s2 := idle_h / shown if shown > 0.0 else 1.0
+			_walk_scale = Vector2(s2, s2)
+
+
+func _body_height(tex: Texture2D, hf: int, vf: int) -> float:
+	if tex == null:
+		return 0.0
+	var img := tex.get_image()
+	if img == null or img.is_empty():
+		return 0.0
+	if img.get_format() != Image.FORMAT_RGBA8:
+		img.convert(Image.FORMAT_RGBA8)
+	var data := img.get_data()
+	var width := img.get_width()
+	var fw := int(width / maxi(hf, 1))
+	var fh := int(img.get_height() / maxi(vf, 1))
+	var heights: Array[int] = []
+	for row in vf:
+		for col in hf:
+			var x0 := col * fw
+			var y0 := row * fh
+			var min_y := -1
+			var max_y := -1
+			for y in fh:
+				var row_start := ((y0 + y) * width + x0) * 4
+				var opaque := false
+				for x in fw:
+					if data[row_start + x * 4 + 3] > 30:
+						opaque = true
+						break
+				if opaque:
+					if min_y < 0:
+						min_y = y
+					max_y = y
+			if min_y >= 0:
+				heights.append(max_y - min_y + 1)
+	if heights.is_empty():
+		return 0.0
+	heights.sort()
+	return float(heights[heights.size() >> 1])
 
 
 func _body() -> Node2D:
